@@ -12,6 +12,7 @@ Installation steps:
 * `git clone <clone url>`
 
 Test it:
-* Open `index.html` in a browser. For testing purposes, if you don't have a web server, running `python -m SimpleHTTPServer` in the project directory and navigating to [http://localhost:8000](http://localhost:8000) should do the trick.
+* Open `index.html` in a browser.
+ * For testing purposes, if you don't have a web server, running `python -m SimpleHTTPServer` in the project directory and navigating to [http://localhost:8000](http://localhost:8000) should do the trick.
 * You should see a Rubik's Cube, and you should be able to rotate 6 faces and rotate the entire cube with the mouse (or with touch on mobile).
 * To troubleshoot, look for javascript errors in the browser console.
