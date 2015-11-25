@@ -1,0 +1,43 @@
+html * {
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, sans-serif;
+}
+
+html, body, #body-wrapper, #canvas-container {
+  overflow: hidden;
+  margin  : 0;
+  padding : 0;
+}
+
+#canvas-container {
+  width   : 100vw;
+  height  : 90vh;
+  cursor: url(cursor_hand.png) 24 24, auto;
+}
+
+#button-container {
+  width: 100vw;
+  height: 10%;
+  text-align: center;
+}
+
+#button-container button {
+  width: 32vw;
+  height: 10vh;
+  font-size: 4vh;
+  margin: 0;
+}
+
+#button-container button {
+}
+
+#button-container button:first-of-type {
+  float: left;
+}
+
+#button-container button:last-of-type {
+  float: right;
+}
+
+#render-canvas {
+  touch-action: none;
+}
