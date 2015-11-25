@@ -1,5 +1,5 @@
 # cube
-A mobile-friendly web-based Rubik's Cube with a built-in solver using [THREE.js](http://threejs.org/) and [jQuery](https://jquery.com/).
+A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](http://threejs.org/) and [jQuery](https://jquery.com/).
 
 ![Cube image](cube2.png?raw=true "Cube image")
 
