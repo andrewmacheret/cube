@@ -12,5 +12,5 @@ deploy:
   region: us-east-1
   default_text_charset: utf-8
   detect_encoding: true
-  local_dir: www/
-  upload_dir: projects/cube/
+  local_dir: www
+  upload_dir: projects/cube
