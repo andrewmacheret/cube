@@ -1,4 +1,7 @@
 # cube
+
+[![Build Status](https://travis-ci.org/andrewmacheret/cube.svg?branch=master)](https://travis-ci.org/andrewmacheret/cube) [![License](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/andrewmacheret/cube/blob/master/LICENSE.md)
+
 A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](http://threejs.org/) and [jQuery](https://jquery.com/).
 
 ![Cube image](cube2.png?raw=true "Cube image")
