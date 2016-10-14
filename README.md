@@ -4,7 +4,7 @@
 
 A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](http://threejs.org/) and [jQuery](https://jquery.com/).
 
-![Cube image](cube2.png?raw=true "Cube image")
+![Cube image](www/cube2.png?raw=true "Cube image")
 
 See it running at [http://andrewmacheret.com/projects/cube](http://andrewmacheret.com/projects/cube).
 
