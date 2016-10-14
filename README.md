@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/andrewmacheret/cube.svg?branch=master)](https://travis-ci.org/andrewmacheret/cube) [![License](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/andrewmacheret/cube/blob/master/LICENSE.md)
 
-A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](http://threejs.org/) and [jQuery](https://jquery.com/).
+A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](https://threejs.org/) and [jQuery](https://jquery.com/).
 
 ![Cube image](www/cube2.png?raw=true "Cube image")
 
-See it running at [http://andrewmacheret.com/projects/cube](http://andrewmacheret.com/projects/cube).
+See it running at [https://andrewmacheret.com/projects/cube](https://andrewmacheret.com/projects/cube).
 
 Prereqs:
 * A web server (like [Apache](https://httpd.apache.org/)).
