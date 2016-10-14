@@ -4,9 +4,9 @@
 
 A mobile-friendly web-based Rubik's Cube with a built-in solver using [three.js](https://threejs.org/) and [jQuery](https://jquery.com/).
 
-![Cube image](www/cube2.png?raw=true "Cube image")
-
 See it running at [https://andrewmacheret.com/projects/cube](https://andrewmacheret.com/projects/cube).
+
+![Cube image](www/cube2.png?raw=true "Cube image")
 
 Prereqs:
 * A web server (like [Apache](https://httpd.apache.org/)).
