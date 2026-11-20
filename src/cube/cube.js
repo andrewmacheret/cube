@@ -210,6 +210,17 @@ export class Cube {
     }
   }
 
+  getColors() {
+    return Array.from(this.allUnits(), ({ unit }) => unit.getColor());
+  }
+
+  setColors(colors) {
+    let i = 0;
+    for (const { unit } of this.allUnits()) {
+      unit.setColor(colors[i++]);
+    }
+  }
+
   restart() {
     for (const { axisIndex, sideIndex, unit } of this.allUnits()) {
       unit.setColor(this.getColor(axisIndex, sideIndex));

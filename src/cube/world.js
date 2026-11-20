@@ -16,9 +16,8 @@ import {
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { Cube } from './cube.js';
 import { PointerTracker } from './pointer.js';
-import { CubeSolver } from './solver.js';
+import { planSolution } from './solver.js';
 
-const MOVE_MS = 450;
 const SNAP_MS = 160;
 const CAMERA_POSITION = new Vector3(0, 5, 19);
 const CAMERA_TARGET = new Vector3(0, -0.6, 0);
@@ -29,9 +28,12 @@ function easeInOut(t) {
 
 // Owns the three.js scene, the render loop and pointer input for one cube.
 export class World {
-  constructor({ container, onSolvingChange }) {
+  constructor({ container, onSolvingChange, onMovesLeftChange, moveDuration = 450 }) {
     this.container = container;
     this.onSolvingChange = onSolvingChange;
+    this.onMovesLeftChange = onMovesLeftChange;
+    this.moveDuration = moveDuration;
+    this.moves = [];
     this.move = null;
     this.snap = null;
     this.dragging = false;
@@ -71,8 +73,16 @@ export class World {
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(container);
     this.resize();
+    this.updateMovesLeft();
 
     this.renderer.setAnimationLoop((time) => this.render(time));
+  }
+
+  // Tell the page how many moves the solver needs from here. Only call this when no face
+  // is part way through a turn, because planning a solution resets face rotations.
+  updateMovesLeft() {
+    const movesLeft = this.move ? this.moves.length + 1 : planSolution(this.cube).length;
+    this.onMovesLeftChange?.(movesLeft);
   }
 
   initLights() {
@@ -137,23 +147,36 @@ export class World {
   }
 
   shuffle() {
-    if (this.busy) return;
+    if (this.busy || this.dragging) return;
     this.cube.shuffle({ times: 200 });
+    this.updateMovesLeft();
   }
 
   restart() {
-    if (this.busy) return;
+    if (this.busy || this.dragging) return;
     this.cube.restart();
+    this.updateMovesLeft();
   }
 
   solve() {
-    if (this.busy) return;
+    if (this.busy || this.dragging) return;
     this.cube.selectFace();
-    this.cubeSolver = new CubeSolver({ cube: this.cube });
-    this.cubeSolver.start();
-    this.move = this.cubeSolver.getNextMove();
+    this.moves = planSolution(this.cube);
+    this.move = this.moves.shift() ?? null;
     this.moveTime = null;
     this.onSolvingChange?.(!!this.move);
+    this.updateMovesLeft();
+  }
+
+  // How long each solver move takes, in milliseconds. Can change in the middle of a solve.
+  setMoveDuration(ms) {
+    if (this.move && this.moveTime != null) {
+      // keep the current move at the same point instead of jumping
+      const now = performance.now();
+      const percent = (now - this.moveTime) / this.moveDuration;
+      this.moveTime = now - percent * ms;
+    }
+    this.moveDuration = ms;
   }
 
   dragStart(position) {
@@ -219,13 +242,17 @@ export class World {
       this.snap.start ??= time;
       if (this.animateFace(this.snap, this.snap.start, SNAP_MS, time)) {
         this.snap = null;
+        this.updateMovesLeft();
       }
     } else if (this.move) {
       this.moveTime ??= time;
-      if (this.animateFace({ ...this.move, from: 0, to: this.move.rotation }, this.moveTime, MOVE_MS, time)) {
-        this.move = this.cubeSolver.getNextMove();
+      // half turns get a bit longer so they don't look rushed
+      const duration = this.moveDuration * (Math.abs(this.move.rotation) === 2 ? 1.5 : 1);
+      if (this.animateFace({ ...this.move, from: 0, to: this.move.rotation }, this.moveTime, duration, time)) {
+        this.move = this.moves.shift() ?? null;
         this.moveTime = time;
         if (!this.move) this.onSolvingChange?.(false);
+        this.updateMovesLeft();
       }
     }
 
