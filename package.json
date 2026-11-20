@@ -1,0 +1,28 @@
+{
+  "name": "cube",
+  "description": "A mobile-friendly web-based Rubik's Cube with a built-in solver, using React and three.js",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewmacheret/cube.git"
+  },
+  "author": "Andrew Macheret <andrew.macheret@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "vite": "^8.3.8"
+  }
+}

@@ -1,0 +1,61 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.canvas-container {
+  flex: 1;
+  min-height: 0;
+  cursor: url(./cursor_hand.png) 24 24, grab;
+}
+
+.canvas-container canvas {
+  display: block;
+  /* stop the browser from scrolling or zooming while dragging the cube */
+  touch-action: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 1vw;
+  height: 10dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.buttons button {
+  flex: 1;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #333;
+  color: #fff;
+  font: inherit;
+  font-size: 4dvh;
+  cursor: pointer;
+}
+
+.buttons button:hover:not(:disabled) {
+  background: #444;
+}
+
+.buttons button:focus-visible {
+  outline: 3px solid #4d90fe;
+  outline-offset: -3px;
+}
+
+.buttons button:disabled {
+  color: #888;
+  cursor: default;
+}
