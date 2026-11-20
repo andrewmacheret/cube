@@ -1,13 +1,15 @@
-import { makeQuad } from './geometry.js';
+import { Group, Mesh, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { makeHitQuad, makeSticker } from './geometry.js';
 import { Unit } from './unit.js';
 
 const COLORS = {
-  red: 0xff0000,
-  yellow: 0xffff00,
-  orange: 0xffa500,
-  green: 0x00ff00,
-  blue: 0x0000ff,
-  white: 0xffffff
+  red: 0xc41e3a,
+  yellow: 0xffd500,
+  orange: 0xff5800,
+  green: 0x009e60,
+  blue: 0x0051ba,
+  white: 0xf4f4f4
 };
 const COLOR_NAMES = Object.keys(COLORS);
 
@@ -33,6 +35,31 @@ export class Cube {
     this.unitSize = unitSize;
     this.selectedFace = null;
     this.initData();
+    this.initCubies();
+  }
+
+  // The black plastic pieces under the stickers. They are all the same, so they only
+  // need to turn with a face while it animates, then they snap back.
+  initCubies() {
+    const size = this.unitSize * 0.98;
+    this.cubieGeometry = new RoundedBoxGeometry(size, size, size, 4, this.unitSize * 0.12);
+    this.cubieMaterial = new MeshStandardMaterial({ color: 0x111114, roughness: 0.45 });
+    this.cubies = [];
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
+        for (let z = -1; z <= 1; z++) {
+          if (!x && !y && !z) continue;
+          const mesh = new Mesh(this.cubieGeometry, this.cubieMaterial);
+          mesh.position.set(x * this.unitSize, y * this.unitSize, z * this.unitSize);
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          // turn around the middle of the cube, not the middle of the piece
+          const pivot = new Group();
+          pivot.add(mesh);
+          this.cubies.push({ pivot, grid: [x, y, z] });
+        }
+      }
+    }
   }
 
   initData() {
@@ -63,12 +90,11 @@ export class Cube {
   makeUnit(axisIndex, sideIndex, i, j, color) {
     const unitSize = this.unitSize;
     const unitStart = 1.5 * unitSize;
-    const unitBuffer = 0.02 * unitSize;
 
-    const a1 = -unitStart + unitSize * i + unitBuffer;
-    const a2 = -unitStart + unitSize * (i + 1) - unitBuffer;
-    const b1 = -unitStart + unitSize * j + unitBuffer;
-    const b2 = -unitStart + unitSize * (j + 1) - unitBuffer;
+    const a1 = -unitStart + unitSize * i;
+    const a2 = -unitStart + unitSize * (i + 1);
+    const b1 = -unitStart + unitSize * j;
+    const b2 = -unitStart + unitSize * (j + 1);
     const c1 = -unitStart;
     const c2 = unitStart;
 
@@ -96,7 +122,13 @@ export class Cube {
       }
     }
 
-    return new Unit({ square: makeQuad(coords, color), color });
+    const square = makeHitQuad(coords);
+    const material = new MeshPhysicalMaterial({ color, roughness: 0.4, clearcoat: 0.5, clearcoatRoughness: 0.15 });
+    const sticker = makeSticker(coords, { inset: unitSize * 0.07, radius: unitSize * 0.16 }, material);
+    sticker.castShadow = true;
+    sticker.receiveShadow = true;
+    square.add(sticker);
+    return new Unit({ square, sticker, color });
   }
 
   *allUnits() {
@@ -115,12 +147,17 @@ export class Cube {
     return Array.from(this.allUnits(), ({ unit }) => unit.getSquare());
   }
 
+  // Everything that needs to be added to the scene.
+  getObjects() {
+    return [...this.cubies.map(({ pivot }) => pivot), ...this.getSquares()];
+  }
+
   dispose() {
     for (const { unit } of this.allUnits()) {
-      const square = unit.getSquare();
-      square.geometry.dispose();
-      square.material.dispose();
+      unit.dispose();
     }
+    this.cubieGeometry.dispose();
+    this.cubieMaterial.dispose();
   }
 
   // The 9 stickers on a face plus the 12 stickers around its edge.
@@ -184,8 +221,14 @@ export class Cube {
     const axisIndex = AXES.indexOf(axis);
     const sideIndex = SIDES.indexOf(side);
 
+    const angle = (sideIndex === 0 ? 1 : -1) * rotation * (Math.PI / 2);
     for (const unit of this.getUnits({ axisIndex, sideIndex })) {
-      unit.getSquare().rotation[axis] = (sideIndex === 0 ? 1 : -1) * rotation * (Math.PI / 2);
+      unit.getSquare().rotation[axis] = angle;
+    }
+    // side 0 is the face on the negative end of the axis
+    const layer = sideIndex === 0 ? -1 : 1;
+    for (const { pivot, grid } of this.cubies) {
+      if (grid[axisIndex] === layer) pivot.rotation[axis] = angle;
     }
 
     this.selectedFace = { axisIndex, sideIndex, rotation };

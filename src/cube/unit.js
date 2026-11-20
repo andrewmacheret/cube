@@ -1,7 +1,9 @@
-// One colored sticker on the cube.
+// One colored sticker on the cube. `square` is the invisible tile used for picking and turning,
+// and `sticker` is the visible mesh inside it.
 export class Unit {
-  constructor({ square, color }) {
+  constructor({ square, sticker, color }) {
     this.square = square;
+    this.sticker = sticker;
     this.color = color;
     this.selected = false;
   }
@@ -17,7 +19,7 @@ export class Unit {
   setColor(color) {
     this.color = color;
     this.selected = false;
-    this.square.material.color.setHex(color);
+    this.sticker.material.color.setHex(color);
   }
 
   select() {
@@ -25,17 +27,24 @@ export class Unit {
     const r = Math.floor((0xff & (this.color >> 16)) * factor);
     const g = Math.floor((0xff & (this.color >> 8)) * factor);
     const b = Math.floor((0xff & this.color) * factor);
-    this.square.material.color.setHex((r << 16) | (g << 8) | b);
+    this.sticker.material.color.setHex((r << 16) | (g << 8) | b);
     this.selected = true;
   }
 
   unselect() {
-    this.square.material.color.setHex(this.color);
+    this.sticker.material.color.setHex(this.color);
     this.selected = false;
   }
 
   isSelected() {
     return this.selected;
+  }
+
+  dispose() {
+    for (const mesh of [this.square, this.sticker]) {
+      mesh.geometry.dispose();
+      mesh.material.dispose();
+    }
   }
 
   toString() {

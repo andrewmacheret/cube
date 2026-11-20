@@ -1,61 +1,150 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #e2e8f0;
+  background: #0b1120;
+}
+
 html,
 body,
 #app {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background: #000;
-  color: #fff;
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, sans-serif;
 }
 
 .app {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   height: 100dvh;
+  background: radial-gradient(120% 90% at 50% 15%, #3b4a66 0%, #1e293b 45%, #0b1120 100%);
 }
 
 .canvas-container {
-  flex: 1;
-  min-height: 0;
-  cursor: url(./cursor_hand.png) 24 24, grab;
+  position: absolute;
+  inset: 0;
 }
 
 .canvas-container canvas {
   display: block;
+  cursor: grab;
   /* stop the browser from scrolling or zooming while dragging the cube */
   touch-action: none;
 }
 
-.buttons {
-  display: flex;
-  gap: 1vw;
-  height: 10dvh;
-  padding-bottom: env(safe-area-inset-bottom);
+.canvas-container canvas.grabbing {
+  cursor: grabbing;
 }
 
-.buttons button {
-  flex: 1;
+.title {
+  position: absolute;
+  top: max(1.25rem, env(safe-area-inset-top));
+  left: 1.5rem;
+  right: 1.5rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.title h1 {
   margin: 0;
-  border: 0;
-  border-radius: 0;
-  background: #333;
-  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.title p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  z-index: 1;
+  display: flex;
+  gap: 0.75rem;
+  transform: translateX(-50%);
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3), inset 0 1px 0 rgb(255 255 255 / 0.1);
+  color: #f1f5f9;
   font: inherit;
-  font-size: 4dvh;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s, opacity 0.15s;
 }
 
-.buttons button:hover:not(:disabled) {
-  background: #444;
+.control:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.15);
+  transform: translateY(-1px);
 }
 
-.buttons button:focus-visible {
-  outline: 3px solid #4d90fe;
-  outline-offset: -3px;
+.control:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
 }
 
-.buttons button:disabled {
-  color: #888;
+.control:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: 3px;
+}
+
+.control:disabled {
+  opacity: 0.5;
   cursor: default;
+}
+
+.control.primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 8px 24px rgb(99 102 241 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+
+.control.primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7376f4, #b46af8);
+}
+
+.control.primary:disabled {
+  opacity: 0.85;
+}
+
+.control.primary[aria-busy='true'] svg {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    gap: 0.5rem;
+  }
+
+  .control {
+    padding: 0.7rem 0.95rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control,
+  .control.primary[aria-busy='true'] svg {
+    transition: none;
+    animation: none;
+  }
 }
