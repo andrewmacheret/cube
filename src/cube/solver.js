@@ -66,6 +66,61 @@ const FACES = {
   white: { axis: 'z', side: 'back' }
 };
 
+// Play a move instantly, with no animation.
+export function applyMove(cube, move) {
+  cube.rotateFace(move);
+  cube.finishRotation();
+  cube.rotateFace({ ...move, rotation: 0 });
+}
+
+// Work out the whole solution without changing the cube, then drop the wasted moves.
+// Planning it all first lets moves cancel out across solver stages.
+export function planSolution(cube) {
+  const colors = cube.getColors();
+  const solver = new CubeSolver({ cube });
+  solver.start();
+  const moves = [];
+  for (let move = solver.getNextMove(); move; move = solver.getNextMove()) {
+    applyMove(cube, move);
+    moves.push(move);
+  }
+  cube.setColors(colors);
+  cube.selectFace();
+  return simplifyMoves(moves);
+}
+
+// quarter turns as -1, 1 or 2, or 0 for no turn at all
+function normalizeRotation(rotation) {
+  const r = ((rotation % 4) + 4) % 4;
+  return r === 3 ? -1 : r;
+}
+
+// Merge turns of the same face that end up next to each other, so a turn and its undo
+// cancel out and two quarter turns become one half turn. Turns of the opposite face on
+// the same axis don't touch this face, so they can be skipped over when looking back.
+export function simplifyMoves(moves) {
+  const result = [];
+  for (const move of moves) {
+    let rotation = normalizeRotation(move.rotation);
+    if (!rotation) continue;
+
+    let i = result.length - 1;
+    while (i >= 0 && result[i].axis === move.axis && result[i].side !== move.side) i--;
+
+    if (i >= 0 && result[i].axis === move.axis) {
+      rotation = normalizeRotation(result[i].rotation + rotation);
+      if (rotation) {
+        result[i] = { ...result[i], rotation };
+      } else {
+        result.splice(i, 1);
+      }
+    } else {
+      result.push({ ...move, rotation });
+    }
+  }
+  return result;
+}
+
 export class CubeSolver {
   constructor({ cube }) {
     this.cube = cube;

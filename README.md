@@ -4,7 +4,7 @@
 
 A mobile-friendly web-based Rubik's Cube with a built-in solver, using [React](https://react.dev/) and [three.js](https://threejs.org/).
 
-Drag a face to turn it, or drag outside the cube to spin the whole thing. Works with a mouse, touch or a pen.
+Drag a face to turn it, or drag outside the cube to spin the whole thing. Works with a mouse, touch or a pen. While Solve is running, a slider sets how fast it plays its moves. The top right shows how many moves the solver needs from the current position.
 
 See it running at [andrewmacheret.com/projects/cube](https://andrewmacheret.com/projects/cube/).
 
