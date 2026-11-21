@@ -49,6 +49,7 @@ body,
   pointer-events: none;
 }
 
+.title .home,
 .title .pill {
   pointer-events: auto;
   display: inline-flex;
