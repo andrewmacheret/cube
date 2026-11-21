@@ -58,20 +58,20 @@ export default function App() {
 
   return (
     <main className="app">
-      <header className="title">
+      <header className="header title">
         <div>
           <h1>Rubik's Cube</h1>
           <p>Drag a face to turn it. Drag the background to spin.</p>
         </div>
         {solved ? (
-          <div className="moves-left solved">
+          <div className="pill good">
             <Icon>
               <path d="M20 6 9 17l-5-5" />
             </Icon>
             Solved
           </div>
         ) : (
-          <div className="moves-left" title="How many moves this solver needs from here">
+          <div className="pill" title="How many moves this solver needs from here">
             <strong>{movesLeft}</strong>
             {movesLeft === 1 ? 'move' : 'moves'} to solve
           </div>
@@ -81,7 +81,7 @@ export default function App() {
       <div className="canvas-container" ref={containerRef} aria-label="Rubik's Cube. Drag a face to turn it, or drag outside the cube to spin it." role="img" />
 
       <div className="dock">
-        <label className="speed" hidden={!solving}>
+        <label className="slider speed" hidden={!solving}>
           <span>Solve speed</span>
           <input
             type="range"
@@ -91,7 +91,7 @@ export default function App() {
             onChange={changeSpeed}
             aria-valuetext={`${movesPerSecond.toFixed(1)} moves per second`}
           />
-          <span className="speed-value">{movesPerSecond < 10 ? movesPerSecond.toFixed(1) : Math.round(movesPerSecond)}/s</span>
+          <span className="slider-value">{movesPerSecond < 10 ? movesPerSecond.toFixed(1) : Math.round(movesPerSecond)}/s</span>
         </label>
 
         <nav className="controls" aria-label="Cube controls">
@@ -120,6 +120,12 @@ export default function App() {
             {solving ? 'Solving…' : 'Solve'}
           </button>
         </nav>
+
+        <footer className="footer">
+          <a href="https://andrewmacheret.com/">More projects</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://github.com/andrewmacheret/cube">Source</a>
+        </footer>
       </div>
     </main>
   );

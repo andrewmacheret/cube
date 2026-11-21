@@ -1,22 +1,22 @@
+/* Colors, buttons, pills and the footer come from https://andrewmacheret.com/projects.css */
+
 :root {
   color-scheme: dark;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #e2e8f0;
-  background: #0b1120;
 }
 
 html,
 body,
 #app {
   height: 100%;
-  margin: 0;
   overflow: hidden;
 }
 
+/* full screen instead of a centered column */
 .app {
   position: relative;
+  max-width: none;
   height: 100dvh;
-  background: radial-gradient(120% 90% at 50% 15%, #3b4a66 0%, #1e293b 45%, #0b1120 100%);
+  padding: 0;
 }
 
 .canvas-container {
@@ -41,62 +41,17 @@ body,
   left: 1.5rem;
   right: 1.5rem;
   z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
   pointer-events: none;
 }
 
-.moves-left {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: baseline;
-  gap: 0.4rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #94a3b8;
-  font-size: 0.85rem;
-  white-space: nowrap;
+.title .pill {
   pointer-events: auto;
-}
-
-.moves-left strong {
-  color: #f1f5f9;
-  font-size: 1.25rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.moves-left.solved {
-  align-self: flex-start;
-  align-items: center;
-  border-color: rgb(74 222 128 / 0.35);
-  background: rgb(74 222 128 / 0.12);
-  color: #86efac;
-  font-weight: 600;
-}
-
-.title h1 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
-.title p {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: #94a3b8;
 }
 
 .dock {
   position: absolute;
   left: 50%;
-  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -105,25 +60,16 @@ body,
   transform: translateX(-50%);
 }
 
+.dock .footer {
+  margin-top: 0;
+}
+
 .controls {
   display: flex;
   gap: 0.75rem;
 }
 
 .speed {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.4rem 1rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #94a3b8;
-  font-size: 0.8rem;
-  font-weight: 500;
-  white-space: nowrap;
   transition: opacity 0.2s, visibility 0.2s;
 }
 
@@ -135,65 +81,11 @@ body,
 
 .speed input {
   width: 9rem;
-  margin: 0;
-  accent-color: #8b5cf6;
-  cursor: pointer;
 }
 
-.speed-value {
+.speed .slider-value {
   min-width: 2.5rem;
-  color: #e2e8f0;
-  font-variant-numeric: tabular-nums;
   text-align: right;
-}
-
-.control {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border: 1px solid rgb(255 255 255 / 0.14);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3), inset 0 1px 0 rgb(255 255 255 / 0.1);
-  color: #f1f5f9;
-  font: inherit;
-  font-size: 1rem;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color 0.15s, transform 0.15s, opacity 0.15s;
-}
-
-.control:hover:not(:disabled) {
-  background: rgb(255 255 255 / 0.15);
-  transform: translateY(-1px);
-}
-
-.control:active:not(:disabled) {
-  transform: translateY(0) scale(0.97);
-}
-
-.control:focus-visible {
-  outline: 2px solid #a5b4fc;
-  outline-offset: 3px;
-}
-
-.control:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.control.primary {
-  border-color: transparent;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
-  box-shadow: 0 8px 24px rgb(99 102 241 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.25);
-}
-
-.control.primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #7376f4, #b46af8);
 }
 
 .control.primary[aria-busy='true'] {
@@ -202,12 +94,6 @@ body,
 
 .control.primary[aria-busy='true'] svg {
   animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @media (max-width: 480px) {
@@ -226,7 +112,6 @@ body,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .control,
   .speed,
   .control.primary[aria-busy='true'] svg {
     transition: none;
