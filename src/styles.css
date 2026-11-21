@@ -35,17 +35,30 @@ body,
   cursor: grabbing;
 }
 
+/* same centered column as the other projects' header */
 .title {
   position: absolute;
-  top: max(1.25rem, env(safe-area-inset-top));
-  left: 1.5rem;
-  right: 1.5rem;
+  top: max(1.5rem, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1rem;
   z-index: 1;
   pointer-events: none;
 }
 
 .title .pill {
   pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pill svg {
+  display: block;
+  flex-shrink: 0;
 }
 
 .dock {
