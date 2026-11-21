@@ -58,20 +58,15 @@ export default function App() {
 
   return (
     <main className="app">
-      <nav className="breadcrumb" aria-label="Breadcrumb">
-        <ol>
-          <li>
-            <a href="https://andrewmacheret.com/">
-              <img src="https://andrewmacheret.com/favicon.svg" alt="" width="14" height="14" />
-              andrewmacheret.com
-            </a>
-          </li>
-          <li aria-current="page">Rubik's Cube</li>
-        </ol>
-      </nav>
       <header className="header title">
         <div>
-          <h1>Rubik's Cube</h1>
+          <div className="title-row">
+            <a className="home" href="https://andrewmacheret.com/">
+              <img src="https://andrewmacheret.com/favicon.svg" alt="andrewmacheret.com" width="20" height="20" />
+            </a>
+            <span className="slash" aria-hidden="true">/</span>
+            <h1>Rubik's Cube</h1>
+          </div>
           <p>Drag a face to turn it. Drag the background to spin.</p>
         </div>
         {solved ? (
