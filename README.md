@@ -29,7 +29,7 @@ npm run build
 
 ## Health check
 
-[`/projects/cube/healthcheck/`](https://andrewmacheret.com/projects/cube/healthcheck/) checks the page and its scripts and styles. The Canary workflow (`.github/workflows/canary.yml`) opens it once a day, started by [andrewmacheret/canary](https://github.com/andrewmacheret/canary).
+Once a day, the Canary workflow (`.github/workflows/canary.yml`) checks the page and its scripts and styles. It's started by [andrewmacheret/canary](https://github.com/andrewmacheret/canary).
 
 ## Deploy
 
