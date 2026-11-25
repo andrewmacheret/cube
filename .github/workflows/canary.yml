@@ -1,0 +1,14 @@
+name: Canary
+
+# Started once a day by github.com/andrewmacheret/canary
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  healthcheck:
+    uses: andrewmacheret/canary/.github/workflows/healthcheck.yml@master
+    with:
+      url: https://andrewmacheret.com/projects/cube/healthcheck/

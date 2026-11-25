@@ -1,6 +1,6 @@
 # cube
 
-[![Build and deploy](https://github.com/andrewmacheret/cube/actions/workflows/deploy.yml/badge.svg)](https://github.com/andrewmacheret/cube/actions/workflows/deploy.yml) [![License](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/andrewmacheret/cube/blob/master/LICENSE.md)
+[![Build and deploy](https://github.com/andrewmacheret/cube/actions/workflows/deploy.yml/badge.svg)](https://github.com/andrewmacheret/cube/actions/workflows/deploy.yml) [![Canary](https://github.com/andrewmacheret/cube/actions/workflows/canary.yml/badge.svg)](https://github.com/andrewmacheret/cube/actions/workflows/canary.yml) [![License](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/andrewmacheret/cube/blob/master/LICENSE.md)
 
 A mobile-friendly web-based Rubik's Cube with a built-in solver, using [React](https://react.dev/) and [three.js](https://threejs.org/).
 
@@ -26,6 +26,10 @@ npm test
 # production build in dist/
 npm run build
 ```
+
+## Health check
+
+[`/projects/cube/healthcheck/`](https://andrewmacheret.com/projects/cube/healthcheck/) checks the page and its scripts and styles. The Canary workflow (`.github/workflows/canary.yml`) opens it once a day, started by [andrewmacheret/canary](https://github.com/andrewmacheret/canary).
 
 ## Deploy
 
